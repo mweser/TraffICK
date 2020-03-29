@@ -1,4 +1,5 @@
 from DurationQueries import query_trip_data
+from MenuNavigation import *
 
 regions_list = set({'sf', 'la', 'ny', 'dc', 'phx'})
 
@@ -24,8 +25,8 @@ def prompt_data_to_view():
     pass
 
 
-def run_single():
-    if input('Use default origin/destination? Y/n\n') in set({'y', 'Y'}):
+def run_single(use_default=False):
+    if use_default:
         query_trip_data(default_origin, default_dest)
     else:
         origin, dest = prompt_origin_dest()
@@ -33,24 +34,18 @@ def run_single():
 
 
 def run():
-    start_options = """
-    Select an option:
-    1. Enter new query
-    2. Run single query
-    3. View data for query
-    4. Run in background
-    
-    
-    """
+    start_options = ['Run default configuration',
+                     'Run single query',
+                     'View data for query',
+                     'View entries',
+                     'Run in background']
 
-    start_operation = input(start_options)
+    start_operation = prompt_menu(start_options, "Select an option:")
 
-    if start_operation == '1':
-        prompt_origin_dest()
-    elif start_operation == '2':
-        run_single()
-    elif start_operation == '3':
-        prompt_data_to_view()
+    if start_operation == 'Run default configuration':
+        run_single(use_default=True)
+    elif start_operation == 'Run single query':
+        run_single(use_default=False)
     else:
         print('Running queries in background...')
 
