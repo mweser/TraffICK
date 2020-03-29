@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, Numeric, DateTime
+from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
@@ -28,13 +28,13 @@ class DurationQuery(Base):
     bidirectional = Column(String(250), nullable=True, default=True)
     creation_date = Column(DateTime, nullable=False, default=datetime.now())
 
+
 class LocationCoordinates(Base):
     __tablename__ = 'location_coordinates'
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    address = Column(String(250), primary_key=True, nullable=False)
     name = Column(String(250), nullable=False)
     lat = Column(String(250), nullable=False)
-    lon = Column(String(250), nullable=False)
-    address = Column(String(250), nullable=False)
+    lng = Column(String(250), nullable=False)
 
 
 class DurationQueryResult(Base):
@@ -44,10 +44,13 @@ class DurationQueryResult(Base):
     origin_name = Column(String(250), nullable=True)
     dest_name = Column(String(250), nullable=False)
     duration_sec = Column(Integer, nullable=False)
+    duration_min = Column(String(250), nullable=False)
     distance_m = Column(Integer, nullable=False)
-    duration_traffic_sec = Column(Integer, nullable=False)
-    distance_traffic_m = Column(Integer, nullable=False)
+    distance_mi = Column(String(250), nullable=False)
+    traffic_duration_sec = Column(Integer, nullable=False)
+    traffic_duration_min = Column(String(250), nullable=False)
     mode = Column(String(250), nullable=False, default='driving')
+    query_name = Column(String(250), primary_key=False, nullable=False)
 
 
 tables_list = [LocationCoordinates, DurationQueryResult, DurationQuery, ApiAccessEvent]

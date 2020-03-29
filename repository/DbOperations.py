@@ -1,6 +1,20 @@
 from repository.Database import *
 
 
+def address_exists(address):
+    session = sessionmaker(bind=engine)()
+    query = session \
+        .query(LocationCoordinates) \
+        .filter_by(address=address) \
+        .all()
+
+    result = len(query) == 1
+
+    if result:
+        print('LocationCoordinates \'{}\' exists'.format(address))
+    return result
+
+
 def duration_query_exists(name):
     session = sessionmaker(bind=engine)()
     query = session \

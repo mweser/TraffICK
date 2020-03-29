@@ -19,6 +19,8 @@ def run_all_queries(client):
 
     for duration_query in queries:
         query_trip_data(duration_query.name, duration_query.origin, duration_query.dest, client)
+        if duration_query.bidirectional == '1':
+            query_trip_data(duration_query.name + '_inv', duration_query.dest, duration_query.origin, client)
 
 
 def run():

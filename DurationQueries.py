@@ -2,9 +2,34 @@ import googlemaps
 
 from Caching import write_cache
 from repository.Database import *
+from repository.DbOperations import address_exists
 
 
-def store_results(start, end, directions_result):
+def save_address(address, name, lat, lng):
+    if not address_exists(address):
+        new_coordinates = LocationCoordinates(
+            address=address,
+            name=name,
+            lat=lat,
+            lng=lng)
+        save_obj(new_coordinates)
+
+
+def save_duration_results(origin_input, dest_input, query_name, results):
+    results = DurationQueryResult(
+        origin_name=origin_input,
+        dest_name=dest_input,
+        duration_sec=results['duration']['value'],
+        duration_min=results['duration']['text'],
+        distance_m=results['distance']['value'],
+        distance_mi=results['distance']['text'],
+        traffic_duration_sec=results['duration_in_traffic']['value'],
+        traffic_duration_min=results['duration_in_traffic']['text'],
+        query_name=query_name)
+    save_obj(results)
+
+
+def store_results(query_name, origin_input, dest_input, directions_result):
     results = directions_result[0]['legs'][0]
 
     dist_m = results['distance']['value']
@@ -14,14 +39,18 @@ def store_results(start, end, directions_result):
     duration_traffic_min = results['duration_in_traffic']['text']
     duration_traffic_sec = results['duration_in_traffic']['value']
 
-    end_address = results['end_address']
-    start_address = results['start_address']
+    origin_address = results['start_address']
+    dest_address = results['end_address']
 
-    start_lat = results['start_location']['lat']
-    start_lng = results['start_location']['lng']
+    origin_lat = results['start_location']['lat']
+    origin_lng = results['start_location']['lng']
 
-    end_lat = results['end_location']['lat']
-    end_lng = results['end_location']['lng']
+    dest_lat = results['end_location']['lat']
+    dest_lng = results['end_location']['lng']
+
+    save_address(origin_address, origin_input, origin_lat, origin_lng)
+    save_address(dest_address, dest_input, dest_lat, dest_lng)
+    save_duration_results(origin_input, dest_input, query_name, results)
 
     output = """
     Start: {} ({})
@@ -32,8 +61,8 @@ def store_results(start, end, directions_result):
     With Traffic: {}
 
     """.format(
-        start, start_address,
-        end, end_address,
+        origin_input, origin_address,
+        dest_input, dest_address,
         dist_mi,
         duration_min,
         duration_traffic_min)
@@ -45,11 +74,11 @@ def query_trip_data(name, origin, dest, client):
     now = datetime.now()
     save_obj(ApiAccessEvent())
     directions_result = client.directions(origin,
-                                         dest,
-                                         mode="driving",
-                                         departure_time=now)
+                                          dest,
+                                          mode="driving",
+                                          departure_time=now)
     write_cache('{}_{}.txt'.format(name, str(now)), directions_result)
-    store_results(origin, dest, directions_result)
+    store_results(name, origin, dest, directions_result)
     return directions_result
 
 
@@ -62,4 +91,3 @@ def fetch_api_key():
     print('Fetching api key...')
     with open("maps.key", 'r') as f:
         return f.readline()
-
