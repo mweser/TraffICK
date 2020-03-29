@@ -25,7 +25,7 @@ class DurationQuery(Base):
     dest = Column(String(250), nullable=False)
     last_run = Column(DateTime, nullable=False, default=datetime.now())
     mode = Column(String(250), nullable=False, default='driving')
-
+    region = Column(String(250), nullable=True)
 
 class LocationCoordinates(Base):
     __tablename__ = 'location_coordinates'

@@ -1,89 +1,33 @@
-import googlemaps
+from DurationQueries import query_trip_data
 
-from Repository import *
-
-use_cache = False
-print_results = False
+regions_list = set({'sf', 'la', 'ny', 'dc', 'phx'})
 
 
-def _fetch_api_key():
-    print('Fetching api key...')
+def build_query_map():
+    query_map = {}
 
-    save_obj(ApiAccessEvent())
-
-    with open("maps.key", 'r') as f:
-        return googlemaps.Client(f.readline())
-
-
-def read_cache(filename):
-    with open(os.path.join('file_cache/', filename), 'r') as f:
-        return f.readline()
+def enter_new_query():
+    input_origin = input('Enter origin: ')
+    input_dest = input('Enter destination: ')
 
 
-def _write_cache(filename, contents):
-    with open(os.path.join('file_cache/', filename), 'w') as f:
-        f.write(str(contents))
+
+def run():
+
+    start_options = """
+    1. Enter new query
+    2. View data for query
+    3. Run in background
+    """
 
 
-def store_results(start, end, directions_result):
-    results = directions_result[0]['legs'][0]
 
-    dist_m = results['distance']['value']
-    dist_mi = results['distance']['text']
-    duration_sec = results['duration']['value']
-    duration_min = results['duration']['text']
-    duration_traffic_min = results['duration_in_traffic']['text']
-    duration_traffic_sec = results['duration_in_traffic']['value']
+    start_operation = input('Enter new query (1) or continue with existing (2)?')
 
-    end_address = results['end_address']
-    start_address = results['start_address']
+    if start_operation == '1':
+        enter_new_query()
 
-    start_lat = results['start_location']['lat']
-    start_lng = results['start_location']['lng']
-
-    end_lat = results['end_location']['lat']
-    end_lng = results['end_location']['lng']
-
-    output = """
-    Start: {} ({})
-    End: {} ({})
-    
-    Distance: {}
-    Duration: {}
-    With Traffic: {}
-    
-    """.format(
-        start, start_address,
-        end, end_address,
-        dist_mi,
-        duration_min,
-        duration_traffic_min)
-
-    print(output)
-
-
-def query_trip_data(origin, dest):
-    gmaps = _fetch_api_key()
-    now = datetime.now()
-    directions_result = gmaps.directions(origin,
-                                         dest,
-                                         mode="driving",
-                                         departure_time=now)
-    _write_cache('{}_to_{}.txt'.format(origin, dest), directions_result)
-    return directions_result
-
-
-def run(origin, dest):
-    if not use_cache:
-        data = query_trip_data(origin, dest)
-    else:
-        print("Reading from cache")
-        data = read_cache('{}_to_{}.txt'.format(origin, dest))
-
-    if print_results:
-        print(str(data))
-
-    store_results(origin, dest, data)
+    data = query_trip_data(input_origin, input_dest)
 
 
 origin = "333 twin dolphin drive"
