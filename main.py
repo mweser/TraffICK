@@ -17,14 +17,14 @@ def write_results(filename, contents):
 gmaps = googlemaps.Client(_fetch_api_key())
 
 # Geocoding an address
-geocode_result = gmaps.geocode('1600 Amphitheatre Parkway, Mountain View, CA')
+# geocode_result = gmaps.geocode('1600 Amphitheatre Parkway, Mountain View, CA')
 
 # Look up an address with reverse geocoding
-reverse_geocode_result = gmaps.reverse_geocode((40.714224, -73.961452))
+# reverse_geocode_result = gmaps.reverse_geocode((40.714224, -73.961452))
 
 # Request directions via public transit
 now = datetime.now()
-directions_result = gmaps.directions("69 clementina st, san francisco",
+directions_result = gmaps.directions("333 twin dolphin drive",
                                      "555 california st",
                                      mode="driving",
                                      departure_time=now)
