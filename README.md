@@ -26,6 +26,20 @@ NYC
 -(look for other hotspots)
 
 LA
+-Wilshire/Santa Monica Blvd
+-La Cienega
+-Olympic/Fairfax
+-Downtown
+-Near exits
+-Westwood
+-I-10 near downtown
+-Western/Fairfax in Hollywood/LA
+-405 near LAX
+-I-5 towards Dwntn (Friday nights to watch)
+-Friday nights are the worst
+-Sunset blvd W Hollywood
+
+San Diego
 
 Seattle
 
