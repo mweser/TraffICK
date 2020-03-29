@@ -1,4 +1,3 @@
-import json
 from datetime import datetime
 
 import googlemaps
@@ -17,10 +16,14 @@ def write_results(filename, contents):
 def query_trip_data(origin, dest):
     gmaps = _fetch_api_key()
     now = datetime.now()
-    directions_result = gmaps.directions("333 twin dolphin drive",
-                                         "555 california st",
+    directions_result = gmaps.directions(origin,
+                                         dest,
                                          mode="driving",
                                          departure_time=now)
     print(directions_result)
 
 
+origin = "333 twin dolphin drive"
+dest = "555 california st"
+
+query_trip_data(origin, dest)
