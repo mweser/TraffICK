@@ -14,7 +14,7 @@ def parse_mode(data):
 
 
 def parse_bidirectional(data):
-    return str(data.lower() in valid_false)
+    return str(data.lower()) not in valid_false
 
 
 def store_csv_to_db(filename='query_list/queries.csv'):
