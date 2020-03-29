@@ -14,7 +14,8 @@ Base = declarative_base()
 
 class ApiAccessEvent(Base):
     __tablename__ = 'api_access'
-    query_time = Column(DateTime, primary_key=True, nullable=False, default=datetime.now())
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    query_time = Column(DateTime, primary_key=False, nullable=False, default=datetime.now())
 
 
 class DurationQuery(Base):

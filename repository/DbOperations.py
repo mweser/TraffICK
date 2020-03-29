@@ -13,3 +13,11 @@ def duration_query_exists(name):
     if result:
         print('DurationQuery \'{}\' exists'.format(name))
     return result
+
+
+def fetch_duration_queries():
+    session = sessionmaker(bind=engine)()
+    query = session \
+        .query(DurationQuery) \
+        .all()
+    return query

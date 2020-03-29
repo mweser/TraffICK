@@ -23,8 +23,6 @@ def store_results(start, end, directions_result):
     end_lat = results['end_location']['lat']
     end_lng = results['end_location']['lng']
 
-
-
     output = """
     Start: {} ({})
     End: {} ({})
@@ -43,22 +41,25 @@ def store_results(start, end, directions_result):
     print(output)
 
 
-def query_trip_data(origin, dest):
-    gmaps = _fetch_api_key()
+def query_trip_data(name, origin, dest, client):
     now = datetime.now()
-    directions_result = gmaps.directions(origin,
+    save_obj(ApiAccessEvent())
+    directions_result = client.directions(origin,
                                          dest,
                                          mode="driving",
                                          departure_time=now)
-    write_cache('{}_to_{}.txt'.format(origin, dest), directions_result)
+    write_cache('{}_{}.txt'.format(name, str(now)), directions_result)
     store_results(origin, dest, directions_result)
     return directions_result
 
 
-def _fetch_api_key():
+def fetch_client(key):
+    print('Fetching maps client')
+    return googlemaps.Client(key)
+
+
+def fetch_api_key():
     print('Fetching api key...')
-
-    save_obj(ApiAccessEvent())
-
     with open("maps.key", 'r') as f:
-        return googlemaps.Client(f.readline())
+        return f.readline()
+

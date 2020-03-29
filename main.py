@@ -1,6 +1,9 @@
-from DurationQueries import query_trip_data
+import sys
+
+from DurationQueries import query_trip_data, fetch_api_key, fetch_client
 from ImportQueries import store_csv_to_db
 from MenuNavigation import *
+from repository.DbOperations import fetch_duration_queries
 
 regions_list = set({'sf', 'la', 'ny', 'dc', 'phx'})
 
@@ -11,47 +14,40 @@ other_origin = "Yamanakako Onsen Benifuji no Yu hot spring, 865-776 Yamanaka, Ya
 other_dest = "2-chōme-13-10 Asahi, Fujiyoshida, Yamanashi 403-0012, Japan"
 
 
-def build_query_map():
-    query_map = {}
+def run_all_queries(client):
+    queries = fetch_duration_queries()
 
-
-def prompt_origin_dest():
-    input_origin = input('Enter origin: ')
-    input_dest = input('Enter destination: ')
-
-    return input_origin, input_dest
-
-
-def prompt_data_to_view():
-    pass
-
-
-def run_single(use_default=False):
-    if use_default:
-        query_trip_data(default_origin, default_dest)
-    else:
-        origin, dest = prompt_origin_dest()
-        query_trip_data(origin, dest)
+    for duration_query in queries:
+        query_trip_data(duration_query.name, duration_query.origin, duration_query.dest, client)
 
 
 def run():
-    start_options = ['Run default configuration',
-                     'Run single query',
-                     'View data for query',
-                     'View entries',
-                     'Run in background',
-                     'Import data from CSV']
+    is_done = False
 
-    start_operation = prompt_menu(start_options, "Select an option:")
+    api_key = fetch_api_key()
+    client = fetch_client(api_key)
 
-    if start_operation == 'Run default configuration':
-        run_single(use_default=True)
-    elif start_operation == 'Run single query':
-        run_single(use_default=False)
-    elif start_operation == 'Import data from CSV':
-        store_csv_to_db()
-    else:
-        print('Running queries in background...')
+
+
+    while not is_done:
+        start_options = ['Run all queries',
+                         'View data for query',
+                         'View entries',
+                         'Run in background',
+                         'Import data from CSV']
+
+        start_operation = prompt_menu(start_options, "Select an option:")
+
+        if start_operation == 'Run all queries':
+            run_all_queries(client)
+        elif start_operation == 'Import data from CSV':
+            store_csv_to_db()
+        elif start_operation == 'Run in background':
+            store_csv_to_db()
+            sys.exit(1)
+
+        else:
+            print('Option not available (yet)')
 
 
 run()
