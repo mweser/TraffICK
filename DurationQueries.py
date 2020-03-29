@@ -1,9 +1,7 @@
-from datetime import datetime
-
 import googlemaps
 
 from Caching import write_cache
-from Repository import *
+from repository.Database import *
 
 
 def store_results(start, end, directions_result):
@@ -24,6 +22,8 @@ def store_results(start, end, directions_result):
 
     end_lat = results['end_location']['lat']
     end_lng = results['end_location']['lng']
+
+
 
     output = """
     Start: {} ({})

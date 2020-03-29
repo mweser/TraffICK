@@ -1,0 +1,7 @@
+"name","origin","destination","region_code","mode","bidirectional"
+"sf_bay_bridge","Salesforce Tower, 415 Mission St, San Francisco, CA 94105","Pixar Animation Studios, 1200 Park Ave, Emeryville, CA 94608","sf","driving","true"
+"hayward_bridge","JetBrains Americas Inc. - Headquarters, 989 E Hillsdale Blvd STE 200, Foster City, CA 94404","California State University, East Bay","sf","",""
+"i280_south_bay","Canada College, Farm Hill Boulevard, Redwood City, CA","Winchester Mystery House, 525 S Winchester Blvd, San Jose, CA 95128","sf","",""
+"iad-dca","dulles airport","reagan national airport","dc","",""
+"i10_west_side","sky harbor airport","raising cane's avondale","phx","",""
+"tysons-dc","tysons galleria ","leo at waterfront","dc","",""

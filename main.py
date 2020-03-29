@@ -1,4 +1,5 @@
 from DurationQueries import query_trip_data
+from ImportQueries import store_csv_to_db
 from MenuNavigation import *
 
 regions_list = set({'sf', 'la', 'ny', 'dc', 'phx'})
@@ -38,7 +39,8 @@ def run():
                      'Run single query',
                      'View data for query',
                      'View entries',
-                     'Run in background']
+                     'Run in background',
+                     'Import data from CSV']
 
     start_operation = prompt_menu(start_options, "Select an option:")
 
@@ -46,6 +48,8 @@ def run():
         run_single(use_default=True)
     elif start_operation == 'Run single query':
         run_single(use_default=False)
+    elif start_operation == 'Import data from CSV':
+        store_csv_to_db()
     else:
         print('Running queries in background...')
 

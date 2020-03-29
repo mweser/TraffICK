@@ -19,13 +19,13 @@ class ApiAccessEvent(Base):
 
 class DurationQuery(Base):
     __tablename__ = 'duration_query'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(250), nullable=False)
+    name = Column(String(250), primary_key=True, nullable=False)
     origin = Column(String(250), nullable=False)
     dest = Column(String(250), nullable=False)
-    last_run = Column(DateTime, nullable=False, default=datetime.now())
-    mode = Column(String(250), nullable=False, default='driving')
+    mode = Column(String(250), nullable=True, default='driving')
     region = Column(String(250), nullable=True)
+    bidirectional = Column(String(250), nullable=True, default=True)
+    creation_date = Column(DateTime, nullable=False, default=datetime.now())
 
 class LocationCoordinates(Base):
     __tablename__ = 'location_coordinates'
@@ -40,7 +40,7 @@ class DurationQueryResult(Base):
     __tablename__ = 'duration_query_result'
     id = Column(Integer, primary_key=True, autoincrement=True)
     query_time = Column(DateTime, nullable=False, default=datetime.now())
-    origin_name = Column(String(250), nullable=False)
+    origin_name = Column(String(250), nullable=True)
     dest_name = Column(String(250), nullable=False)
     duration_sec = Column(Integer, nullable=False)
     distance_m = Column(Integer, nullable=False)
