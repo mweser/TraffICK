@@ -24,10 +24,18 @@ def run_all_queries(client):
 
 
 def run():
-    is_done = False
-
     api_key = fetch_api_key()
     client = fetch_client(api_key)
+
+    args = sys.argv
+    if len(args) >= 2:
+        if '-c' in args:
+            print('Run cron')
+            run_all_queries(client)
+            return
+
+    is_done = False
+
 
 
 
@@ -47,7 +55,8 @@ def run():
         elif start_operation == 'Run in background':
             store_csv_to_db()
             sys.exit(1)
-
+        elif start_operation == 'q':
+            sys.exit(1)
         else:
             print('Option not available (yet)')
 

@@ -1,5 +1,10 @@
+import sys
+
+
 def prompt_menu(menu_list, header=""):
     user_in = input(populate_menu(menu_list, header))
+    if user_in == 'q':
+        sys.exit(1)
     return menu_list[int(user_in) - 1]
 
 
