@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 import googlemaps
@@ -9,8 +10,8 @@ def _fetch_api_key():
 
 
 def write_results(filename, contents):
-    with open(filename, 'w') as newfile:
-        newfile.write(contents)
+    with open(os.path.join('file_cache/', filename), 'w') as newfile:
+        newfile.write(str(contents))
 
 
 def query_trip_data(origin, dest):
@@ -20,6 +21,7 @@ def query_trip_data(origin, dest):
                                          dest,
                                          mode="driving",
                                          departure_time=now)
+    write_results('rws_to_555.txt', directions_result)
     print(directions_result)
 
 
