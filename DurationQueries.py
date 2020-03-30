@@ -1,6 +1,6 @@
 import googlemaps
 
-from Caching import write_cache
+from repository.Caching import write_cache
 from repository.Database import *
 from repository.DbOperations import address_exists
 
@@ -32,12 +32,9 @@ def save_duration_results(origin_input, dest_input, query_name, results):
 def store_results(query_name, origin_input, dest_input, directions_result):
     results = directions_result[0]['legs'][0]
 
-    dist_m = results['distance']['value']
     dist_mi = results['distance']['text']
-    duration_sec = results['duration']['value']
     duration_min = results['duration']['text']
     duration_traffic_min = results['duration_in_traffic']['text']
-    duration_traffic_sec = results['duration_in_traffic']['value']
 
     origin_address = results['start_address']
     dest_address = results['end_address']
@@ -73,6 +70,7 @@ def store_results(query_name, origin_input, dest_input, directions_result):
 def query_trip_data(name, origin, dest, client):
     now = datetime.now()
     save_obj(ApiAccessEvent())
+    #todo Fix to actually use mode from db table (right now hardcoded to 'driving'
     directions_result = client.directions(origin,
                                           dest,
                                           mode="driving",
