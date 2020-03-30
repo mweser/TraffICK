@@ -69,13 +69,14 @@ def store_results(query_name, origin_input, dest_input, directions_result):
 
 def query_trip_data(name, origin, dest, client):
     now = datetime.now()
+    print(str(now))
     save_obj(ApiAccessEvent())
     #todo Fix to actually use mode from db table (right now hardcoded to 'driving'
     directions_result = client.directions(origin,
                                           dest,
                                           mode="driving",
                                           departure_time=now)
-    write_cache('{}_{}.txt'.format(name, str(now)), directions_result)
+    # write_cache('{}_{}.txt'.format(name, str(now)), directions_result)
     store_results(name, origin, dest, directions_result)
     return directions_result
 
